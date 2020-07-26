@@ -27,11 +27,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nullable;
+import com.myapplication.RingerPackage; // <-- Add this line with your package name.
 
 public class MainApplication extends Application implements ReactApplication {
   private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(
-    new BasePackageList().getPackageList()
-  );
+      new BasePackageList().getPackageList());
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
@@ -43,6 +43,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       List<ReactPackage> packages = new PackageList(this).getPackages();
       packages.add(new ModuleRegistryAdapter(mModuleRegistryProvider));
+      packages.add(new RingerPackage());
       return packages;
     }
 
@@ -88,24 +89,23 @@ public class MainApplication extends Application implements ReactApplication {
   }
 
   /**
-   * Loads Flipper in React Native templates. Call this in the onCreate method with something like
-   * initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+   * Loads Flipper in React Native templates. Call this in the onCreate method
+   * with something like initializeFlipper(this,
+   * getReactNativeHost().getReactInstanceManager());
    *
    * @param context
    * @param reactInstanceManager
    */
-  private static void initializeFlipper(
-      Context context, ReactInstanceManager reactInstanceManager) {
+  private static void initializeFlipper(Context context, ReactInstanceManager reactInstanceManager) {
     if (BuildConfig.DEBUG) {
       try {
         /*
-         We use reflection here to pick up the class that initializes Flipper,
-        since Flipper library is not available in release mode
-        */
+         * We use reflection here to pick up the class that initializes Flipper, since
+         * Flipper library is not available in release mode
+         */
         Class<?> aClass = Class.forName("com.rndiffapp.ReactNativeFlipper");
-        aClass
-            .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
-            .invoke(null, context, reactInstanceManager);
+        aClass.getMethod("initializeFlipper", Context.class, ReactInstanceManager.class).invoke(null, context,
+            reactInstanceManager);
       } catch (ClassNotFoundException e) {
         e.printStackTrace();
       } catch (NoSuchMethodException e) {
