@@ -8,7 +8,6 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch } from "react-redux";
 
 import Input from "../components/Input";
@@ -60,6 +59,9 @@ const AuthScreen = (props) => {
   });
 
   const authHandler = async () => {
+    if (!formState.inputValues.email) {
+      setError("Please enter your email!");
+    }
     setError(null);
     let action;
     if (isSignup) {
@@ -76,7 +78,7 @@ const AuthScreen = (props) => {
     setIsLoading(true);
     try {
       await dispatch(action);
-      props.navigation.navigate("Home");
+      props.navigation.navigate("Advertisers");
     } catch (error) {
       setError(error.message);
       setIsLoading(false);
@@ -103,61 +105,54 @@ const AuthScreen = (props) => {
 
   return (
     <KeyboardAvoidingView style={styles.screen}>
-      <LinearGradient colors={["#ffedff", "#ffe3ff"]} style={styles.gradient}>
-        <View style={styles.authContainer}>
-          <ScrollView>
-            <Input
-              id="email"
-              label="E-Mail"
-              keyboardType="email-address"
-              required
-              email
-              autoCapitalize="none"
-              errorText="Please enter a valid email address."
-              onInputChange={inputChangeHandler}
-              initialValue=""
-            />
-            <Input
-              id="password"
-              label="Password"
-              keyboardType="default"
-              secureTextEntry
-              required
-              minLength={6}
-              autoCapitalize="none"
-              errorText="Please enter a valid password."
-              onInputChange={inputChangeHandler}
-              initialValue=""
-            />
-            <View style={styles.buttonContainer}>
-              {isLoading ? (
-                <ActivityIndicator size="small" color={Colors.primary} />
-              ) : (
-                <Button
-                  title={isSignup ? "Sign Up" : "Login"}
-                  color={Colors.primary}
-                  onPress={authHandler}
-                />
-              )}
-            </View>
-            <View style={styles.buttonContainer}>
+      <View style={styles.authContainer}>
+        <ScrollView>
+          <Input
+            id="email"
+            label="E-Mail"
+            keyboardType="email-address"
+            required
+            email
+            autoCapitalize="none"
+            errorText="Please enter a valid email address."
+            onInputChange={inputChangeHandler}
+            initialValue=""
+          />
+          <Input
+            id="password"
+            label="Password"
+            keyboardType="default"
+            secureTextEntry
+            required
+            minLength={6}
+            autoCapitalize="none"
+            errorText="Please enter a valid password."
+            onInputChange={inputChangeHandler}
+            initialValue=""
+          />
+          <View style={styles.buttonContainer}>
+            {isLoading ? (
+              <ActivityIndicator size="small" color={Colors.primary} />
+            ) : (
               <Button
-                title={`Switch to ${isSignup ? "Login" : "Sign Up"}`}
-                color={Colors.accent}
-                onPress={() => {
-                  setIsSignup((prevState) => !prevState);
-                }}
+                title={isSignup ? "Sign Up" : "Login"}
+                color={Colors.primary}
+                onPress={authHandler}
               />
-            </View>
-            {/* <TouchableOpacity onPress={() => {}}>
-              <View style={styles.customBtnContainer}>
-                <Text style={styles.customBtnText}>Login with Google</Text>
-              </View>
-            </TouchableOpacity> */}
-            <GoogleLogin navigation={props.navigation} />
-          </ScrollView>
-        </View>
-      </LinearGradient>
+            )}
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              title={`Switch to ${isSignup ? "Login" : "Sign Up"}`}
+              color={Colors.accent}
+              onPress={() => {
+                setIsSignup((prevState) => !prevState);
+              }}
+            />
+          </View>
+          <GoogleLogin navigation={props.navigation} />
+        </ScrollView>
+      </View>
     </KeyboardAvoidingView>
   );
 };
@@ -168,12 +163,11 @@ AuthScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1,
-  },
-  gradient: {
-    flex: 1,
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
+    backgroundColor: Colors.accent,
+    marginTop: 1,
   },
   authContainer: {
     width: "80%",

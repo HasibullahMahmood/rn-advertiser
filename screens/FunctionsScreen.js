@@ -12,8 +12,7 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 // @ts-ignore
 import HeadphoneDetection from "react-native-headphone-detection";
 
-const HomeScreen = (props) => {
-  console.log("home screen");
+const FunctionsScreen = (props) => {
   const [isHeadphoneConnected, setIsHeadphoneConnected] = useState(false);
   const [ringMode, setRingMode] = useState();
   const [ringtoneTitle, setRingtoneTitle] = useState();
@@ -113,9 +112,9 @@ const HomeScreen = (props) => {
   );
 };
 
-HomeScreen.navigationOptions = (navData) => {
+FunctionsScreen.navigationOptions = (navData) => {
   return {
-    headerTitle: "Home",
+    headerTitle: "Functions Screen",
     headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
@@ -145,4 +144,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default FunctionsScreen;

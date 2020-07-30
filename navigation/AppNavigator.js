@@ -1,29 +1,38 @@
 import React from "react";
-import {
-  Platform,
-  SafeAreaView,
-  View,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-} from "react-native";
-import { useDispatch } from "react-redux";
+import { Platform } from "react-native";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
-import { createDrawerNavigator, DrawerItems } from "react-navigation-drawer";
+import { createBottomTabNavigator } from "react-navigation-tabs";
+import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
+import {
+  FontAwesome,
+  FontAwesome5,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 
 import AuthScreen from "../screens/AuthScreen";
-import HomeScreen from "../screens/HomeScreen";
+import AdvertisersScreen from "../screens/AdvertisersScreen";
 import StartupScreen from "../screens/StartupScreen";
+import RingtoneScreen from "../screens/RingtoneScreen";
+import AddRingtoneScreen from "../screens/AddRingtoneScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 
 import Colors from "../constants/Colors";
-import * as authActions from "../store/actions/auth";
 
 const navOptions = {
-  headerStyle: {
-    backgroundColor: Platform.OS === "android" ? Colors.primary : "",
-  },
+  headerBackground: () => (
+    <LinearGradient
+      colors={[Colors.accent, Colors.primary]}
+      style={{ flex: 1 }}
+    />
+  ),
+  // headerStyle: {
+  //   backgroundColor: Platform.OS === "android" ? Colors.primary : "",
+  // },
   headerTitleStyle: {
+    textAlign: "center",
+    fontWeight: "bold",
     //fontFamily: "open-sans-bold",
   },
   headerBackTitleStyle: {
@@ -41,65 +50,107 @@ const AuthStackNavigator = createStackNavigator(
   }
 );
 
-const HomeStackNavigator = createStackNavigator(
+const AdvertisersStackNavigator = createStackNavigator(
   {
-    Home: HomeScreen,
+    Advertisers: AdvertisersScreen,
   },
   {
     defaultNavigationOptions: navOptions,
   }
 );
 
-const AppDrawerNavigator = createDrawerNavigator(
+const RingtonesStackNavigator = createStackNavigator(
   {
-    HomeNavigator: {
-      screen: HomeStackNavigator,
-      navigationOptions: {
-        drawerLabel: "Home",
-      },
-    },
+    Ringtone: RingtoneScreen,
   },
   {
-    contentOptions: {
-      activeTintColor: Colors.primary,
-    },
-    contentComponent: (props) => {
-      const dispatch = useDispatch();
-      return (
-        <View style={{ flex: 1, paddingTop: 20 }}>
-          <SafeAreaView forceInset={{ top: "always", horizontal: "never" }}>
-            <DrawerItems {...props} />
-            <TouchableOpacity
-              onPress={() => {
-                dispatch(authActions.logout());
-                props.navigation.navigate("Auth");
-              }}
-            >
-              <View style={styles.buttonContainer}>
-                <Text style={styles.buttonText}>Logout</Text>
-              </View>
-            </TouchableOpacity>
-          </SafeAreaView>
-        </View>
-      );
-    },
+    defaultNavigationOptions: navOptions,
   }
 );
+
+const AddRingtoneStackNavigator = createStackNavigator(
+  {
+    AddRingtone: AddRingtoneScreen,
+  },
+  {
+    defaultNavigationOptions: navOptions,
+  }
+);
+
+const ProfileStackNavigator = createStackNavigator(
+  {
+    Profile: ProfileScreen,
+  },
+  {
+    defaultNavigationOptions: navOptions,
+  }
+);
+
+const tabScreenConfig = {
+  Advertisers: {
+    screen: AdvertisersStackNavigator,
+    navigationOptions: {
+      tabBarIcon: (tabInfo) => {
+        return <FontAwesome5 name="home" size={23} color={tabInfo.tintColor} />;
+      },
+      tabBarColor: Colors.primary,
+    },
+  },
+  AddRingtone: {
+    screen: AddRingtoneStackNavigator,
+    navigationOptions: {
+      tabBarIcon: (tabInfo) => {
+        return (
+          <MaterialCommunityIcons
+            name="music-note-plus"
+            size={26}
+            color={tabInfo.tintColor}
+          />
+        );
+      },
+      tabBarColor: Colors.primary,
+    },
+  },
+  Ringtones: {
+    screen: RingtonesStackNavigator,
+    navigationOptions: {
+      tabBarIcon: (tabInfo) => {
+        return <FontAwesome name="music" size={24} color={tabInfo.tintColor} />;
+      },
+      tabBarColor: Colors.primary,
+    },
+  },
+  Profile: {
+    screen: ProfileStackNavigator,
+    navigationOptions: {
+      tabBarIcon: (tabInfo) => {
+        return (
+          <FontAwesome5 name="user-alt" size={24} color={tabInfo.tintColor} />
+        );
+      },
+      tabBarColor: Colors.primary,
+    },
+  },
+};
+
+const AppTabNavigator =
+  Platform.OS === "android"
+    ? createMaterialBottomTabNavigator(tabScreenConfig, {
+        activeColor: "white",
+        shifting: true,
+        labeled: false,
+      })
+    : createBottomTabNavigator(tabScreenConfig, {
+        tabBarOptions: {
+          showLabel: false,
+          activeTintColor: Colors.primary,
+        },
+      });
 
 const MainNavigator = createSwitchNavigator({
   Startup: StartupScreen,
   AuthStack: AuthStackNavigator,
-  AppDrawer: AppDrawerNavigator,
+  AppTab: AppTabNavigator,
 });
 
-const styles = StyleSheet.create({
-  buttonContainer: {
-    margin: 10,
-    marginLeft: 15,
-  },
-  buttonText: {
-    color: "black",
-    fontWeight: "bold",
-  },
-});
 export default createAppContainer(MainNavigator);

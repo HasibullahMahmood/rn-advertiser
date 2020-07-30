@@ -37,7 +37,7 @@ const GoogleLogin = (props) => {
           user.auth.accessToken,
           expirationDate
         );
-        props.navigation.navigate("Home");
+        props.navigation.navigate("Advertisers");
       }
     } catch ({ message }) {
       alert("login: Error:" + message);
