@@ -1,9 +1,9 @@
 {
-  "name": "myApplication",
-  "displayName": "myApplication",
+  "name": "Advertiser",
+  "displayName": "Advertiser",
   "expo": {
-    "name": "myApplication",
-    "slug": "myApplication",
+    "name": "Advertiser",
+    "slug": "rn-advertiser",
     "version": "1.0.0",
     "assetBundlePatterns": ["**/*"],
     "android": {

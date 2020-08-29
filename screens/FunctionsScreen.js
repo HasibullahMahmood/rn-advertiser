@@ -115,17 +115,6 @@ const FunctionsScreen = (props) => {
 FunctionsScreen.navigationOptions = (navData) => {
   return {
     headerTitle: "Functions Screen",
-    headerLeft: () => (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="Menu"
-          iconName={Platform.OS === "android" ? "md-list" : "ios-list"}
-          onPress={() => {
-            navData.navigation.toggleDrawer();
-          }}
-        />
-      </HeaderButtons>
-    ),
   };
 };
 

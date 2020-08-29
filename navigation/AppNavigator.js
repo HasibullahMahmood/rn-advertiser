@@ -17,10 +17,12 @@ import StartupScreen from "../screens/StartupScreen";
 import RingtoneScreen from "../screens/RingtoneScreen";
 import AddRingtoneScreen from "../screens/AddRingtoneScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import FunctionsScreen from "../screens/FunctionsScreen";
 
 import Colors from "../constants/Colors";
 
 const navOptions = {
+  headerStatusBarHeight: 0,
   headerBackground: () => (
     <LinearGradient
       colors={[Colors.accent, Colors.primary]}
@@ -80,6 +82,7 @@ const AddRingtoneStackNavigator = createStackNavigator(
 const ProfileStackNavigator = createStackNavigator(
   {
     Profile: ProfileScreen,
+    Functions: FunctionsScreen,
   },
   {
     defaultNavigationOptions: navOptions,

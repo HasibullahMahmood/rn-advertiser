@@ -31,6 +31,8 @@ export const signup = (email, password) => {
     );
 
     const resData = await response.json();
+    console.log("result after signup");
+    console.log(resData);
     if (!response.ok) {
       throw new Error(resData.error.message);
     }
@@ -67,6 +69,8 @@ export const login = (email, password) => {
       }
     );
     const resData = await response.json();
+    console.log("result after login");
+    console.log(resData);
     if (!response.ok) {
       throw new Error(resData.error.message);
     }

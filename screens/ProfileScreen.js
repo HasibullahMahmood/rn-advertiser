@@ -8,6 +8,14 @@ const ProfileScreen = (props) => {
   const dispatch = useDispatch();
   return (
     <View style={styles.screen}>
+      <View style={styles.btnContainer}>
+        <Button
+          title="OPEN FUNCTIONS"
+          onPress={() => {
+            props.navigation.navigate("Functions");
+          }}
+        />
+      </View>
       <Button
         title="LOGOUT"
         onPress={() => {
@@ -33,6 +41,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.accent,
     marginTop: 1,
   },
+  btnContainer: { marginVertical: 30 },
 });
 
 export default ProfileScreen;
